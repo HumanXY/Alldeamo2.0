@@ -1,0 +1,36 @@
+body {
+    background-image: url(../img/fondo.jpg);
+    background-size: 100vw 100vh;
+    /*background-repeat: no-repeat;*/
+    background-attachment: fixed;
+}
+.container {
+    margin-top: 40px;
+    margin-bottom: 40px;
+    padding-top: 20px;
+    padding-bottom: 15px;
+    background: rgba(255, 255, 255, .5);
+}
+.inicio {
+    padding-top: 25px;
+    margin-top: 70px;
+}
+.metrica1 {
+    background: rgba(0, 0, 0, 0.5);
+    color: rgb(223, 223, 223);
+}
+.metrica2 {
+    background: rgba(255, 0, 0, 0.5);
+    color: rgb(255, 234, 234);
+}
+.metrica3 {
+    background: rgba(64, 175, 0, 0.5);
+    color: rgb(220, 255, 223);
+}
+.metrica1, .metrica2, .metrica3 {
+    padding: 7px;
+}
+.row {
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
