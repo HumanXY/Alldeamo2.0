@@ -2,6 +2,7 @@
 include '../clases/Conexion.php';
 include '../clases/Reporte.php';
 
+//Creacion de objetos de las clases
 $objConexion = new Conexion();
 $objReporte = new Reporte();
 $conexion = $objConexion->conexion();
@@ -38,8 +39,9 @@ $fecha = $_GET['fecha'];
                     <div class="col-4">
                         <i class="far fa-sun fa-3x"></i>
                     </div>
-                    <div class="col-8">
+                    <div class="col-8">    
                         <?php 
+                            //Llamada del objeto atenciones diarias por medio del objeto de la clase
                             $datos = $objReporte->atencionesDiarias($fecha, $conexion);
                             while ($row = mysqli_fetch_array($datos)) {
                         ?>
@@ -59,7 +61,8 @@ $fecha = $_GET['fecha'];
                         <i class="far fa-times-circle fa-3x"></i>
                     </div>
                     <div class="col-8">
-                        <?php 
+                        <?php
+                            //llamada del objeto turnos perdidos por medio del objeto de la clase 
                             $datos = $objReporte->turnosPerdidos($fecha, $conexion);
                             while ($row = mysqli_fetch_array($datos)) {
                         ?>
@@ -80,6 +83,7 @@ $fecha = $_GET['fecha'];
                     </div>
                     <div class="col-8">
                         <?php 
+                            //Llamada del objeto promedio espera por medio del objeto de la clase
                             $datos = $objReporte->promedioEspera($fecha, $conexion);
                             while ($row = mysqli_fetch_array($datos)) {
                         ?>
@@ -97,6 +101,7 @@ $fecha = $_GET['fecha'];
             <div class="col-md-4 border border-dark rounded text-center">
                 <h4 class="">Cantidad</h4>
                 <div>
+                    <!-- Muestra de grafica1 -->
                     <canvas id="grafica1"></canvas>
                 </div>
                 <hr>
@@ -105,6 +110,7 @@ $fecha = $_GET['fecha'];
             <div class="col-md-4 border border-danger rounded text-center">
                 <h4 class="">Cantidad</h4>
                 <div>
+                    <!-- Muestra de grafica2 -->
                     <canvas id="grafica2"></canvas>
                 </div>
                 <hr>
@@ -113,6 +119,7 @@ $fecha = $_GET['fecha'];
             <div class="col-md-4 border border-success rounded text-center">
                 <h4 class="">Tiempo Promedio</h4>
                 <div>
+                    <!-- Muestra de grafica3 -->
                     <canvas id="grafica3"></canvas>
                 </div>
                 <hr>
@@ -123,6 +130,7 @@ $fecha = $_GET['fecha'];
             <div class="col-6 border border-info rounded text-center">
                 <h4>Mayor Tiempo</h4>    
                 <div>
+                    <!-- Muestra de grafica4 -->
                     <canvas id="grafica4"></canvas>
                 </div>
                 <hr>
@@ -131,6 +139,7 @@ $fecha = $_GET['fecha'];
             <div class="col-6 border border-info rounded text-center">
                 <h4>Mayor Tiempo</h4>
                 <div>
+                    <!-- Muestra de grafica5 -->
                     <canvas id="grafica5"></canvas>
                 </div>
                 <hr>
@@ -144,12 +153,13 @@ $fecha = $_GET['fecha'];
     <script src="../js/bootstrap.min.js"></script>
     
     <script>
-    // DATOS GRAFICA 1
+    // Datos grafica 1
         var color = Chart.helpers.color;
 		var datos1 = {
 			labels: [
                 <?php 
                     for($hora = 6; $hora <= 18; $hora++) {
+                        //Llamado de objeto requerido
                         $datos = $objReporte->atencionesDiariasHora($fecha, $hora, $conexion);
                         while ($row = mysqli_fetch_array($datos)) {
                             if ($row['NumAtencion'] != 0) {
@@ -167,7 +177,8 @@ $fecha = $_GET['fecha'];
 				borderColor: window.chartColors.red,
 				borderWidth: 1,
 				data: [
-					<?php 
+                    <?php 
+                        //limites de consultas a graficar
                         for($hora = 6; $hora <= 18; $hora++) {
                             $datos = $objReporte->atencionesDiariasHora($fecha, $hora, $conexion);
                             while ($row = mysqli_fetch_array($datos)) {
@@ -184,11 +195,12 @@ $fecha = $_GET['fecha'];
 			}]
 
 		};
-    // DATOS GRAFICOS 2
+    // Datos grafica 2
 		var datos2 = {
 			labels: [
                 <?php 
                     for($hora = 0; $hora <= 23; $hora++) {
+                        // Llamado de objeto de la clase reporte
                         $datos = $objReporte->turnosPerdidosHora($fecha, $hora, $conexion);
                         while ($row = mysqli_fetch_array($datos)) {
                             if ($row['TurnosPerdidos'] != 0) {
@@ -200,6 +212,7 @@ $fecha = $_GET['fecha'];
                     }
                 ?>
             ],
+            //Graficacion de datos
 			datasets: [{
 				label: 'Perdidos',
 				backgroundColor: 'rgba(46, 204, 113, 0.5)',
@@ -223,13 +236,14 @@ $fecha = $_GET['fecha'];
 			}]
 
 		};
-    //DATOS GRAFICOS 3
+    // Datos grafica 3
         var datos3 = {
             type: 'line',
             data: {
                 labels: [
                     <?php 
                     for($hora = 6; $hora <= 16; $hora++) {
+                        //Llamado objeto de clase reporte
                         $datos = $objReporte->promedioEsperaHora($fecha, $hora, $conexion);
                         while ($row = mysqli_fetch_array($datos)) {
                             if ($row['diferenciaHora'] != '') {
@@ -293,10 +307,11 @@ $fecha = $_GET['fecha'];
                 }
             }
         };
-    //DATOS GRAFICA 4
+    // Datos grafica 4
         var datos4 = {
             labels: [
-                <?php 
+                <?php
+                    //llamado objeto de clase reporte 
                     $datos = $objReporte->mayorEspera($conexion);
                     while ($row = mysqli_fetch_array($datos)) {
                 ?>
@@ -305,6 +320,7 @@ $fecha = $_GET['fecha'];
                     }
                 ?> 
             ],
+            //graficacion de consulta de datos
             datasets: [{
                 label: 'Minutos ',
                 backgroundColor: 'rgba(93, 173, 226, 0.5)',
@@ -324,10 +340,11 @@ $fecha = $_GET['fecha'];
             }]
 
         };
-    //GATOS GRAFICA 5
+    // Datos grafica 5
         var datos5 = {
             labels: [
                 <?php 
+                    //llamado de objeto de la clase reporte
                     $datos = $objReporte->mayorEsperaHora($conexion);
                     while ($row = mysqli_fetch_array($datos)) {
                 ?>
@@ -355,7 +372,7 @@ $fecha = $_GET['fecha'];
             }]
 
         };
-
+    //Caracteristicas Grafica 2
 		window.onload = function() {
 			var graficaDos = document.getElementById('grafica2').getContext('2d');
 			window.myBar = new Chart(graficaDos, {
@@ -371,6 +388,7 @@ $fecha = $_GET['fecha'];
 					}
 				}
 			});
+        //Caracteristicas Grafica 1
             var graficaUno = document.getElementById('grafica1').getContext('2d');
 			window.myBar = new Chart(graficaUno, {
 				type: 'bar',
@@ -385,9 +403,10 @@ $fecha = $_GET['fecha'];
 					}
 				}
 			});
+        //Caracteristicas Grafica 3
             var graficaTres = document.getElementById('grafica3').getContext('2d');
             window.myLine = new Chart(graficaTres, datos3);
-
+        //Caracteristicas Grafica 4
             var graficaCuatro = document.getElementById('grafica4').getContext('2d');
             window.myHorizontalBar = new Chart(graficaCuatro, {
                 type: 'horizontalBar',
@@ -407,6 +426,7 @@ $fecha = $_GET['fecha'];
                     }
                 }
             });
+        //Caracteristicas Grafica 5    
             var graficaCinco = document.getElementById('grafica5').getContext('2d');
             window.myHorizontalBar = new Chart(graficaCinco, {
                 type: 'horizontalBar',
